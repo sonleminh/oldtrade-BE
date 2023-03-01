@@ -1,26 +1,15 @@
 const express = require('express');
-const Message = require('../models/message.model');
+const {
+  getMessageByChat,
+  getLastMessageByChat,
+  sendMessage,
+} = require('../controllers/message.controller');
 const router = express.Router();
 
-router.get('/:id', async (req, res) => {
-  try {
-    const messages = await Message.find({
-      conversationId: req.params.id,
-    });
-    return res.status(200).json(messages);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
-});
+router.get('/:id', getMessageByChat);
 
-router.post('/', async (req, res) => {
-  const newMessage = new Message(req.body);
-  try {
-    const savedMessage = await newMessage.save();
-    return res.status(200).json(savedMessage);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
-});
+router.get('/last/:id', getLastMessageByChat);
+
+router.post('/', sendMessage);
 
 module.exports = router;

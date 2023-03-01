@@ -10,7 +10,6 @@ const getAllUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   const userId = req.params.id;
-  console.log(userId);
   try {
     const user = await User.findOne({ _id: userId });
     return res.status(200).json(user);

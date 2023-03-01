@@ -8,7 +8,7 @@ const mailRouter = require('./src/routes/mail.route');
 const userRouter = require('./src/routes/user.route');
 const postRouter = require('./src/routes/post.route');
 const uploadRouter = require('./src/routes/upload.route');
-const conversation = require('./src/routes/conversation.route');
+const chat = require('./src/routes/chat.route');
 const message = require('./src/routes/message.route');
 
 require('dotenv').config();
@@ -39,7 +39,7 @@ app.use('/api/email', mailRouter);
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
 app.use('/api', uploadRouter);
-app.use('/api/conversation', conversation);
+app.use('/api/chat', chat);
 app.use('/api/message', message);
 
 app.get('/', (req, res) => {

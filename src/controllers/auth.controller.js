@@ -1,7 +1,6 @@
 const User = require('../models/user.model');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
 
 const register = async (req, res) => {
   try {

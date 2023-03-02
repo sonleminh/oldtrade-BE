@@ -4,13 +4,11 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 const authRouter = require('./src/routes/auth.route');
-const mailRouter = require('./src/routes/mail.route');
 const userRouter = require('./src/routes/user.route');
 const postRouter = require('./src/routes/post.route');
 const uploadRouter = require('./src/routes/upload.route');
 const chat = require('./src/routes/chat.route');
 const message = require('./src/routes/message.route');
-
 require('dotenv').config();
 
 const app = express();
@@ -35,7 +33,6 @@ connection.once('open', () => {
 });
 
 app.use('/api', authRouter);
-app.use('/api/email', mailRouter);
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
 app.use('/api', uploadRouter);

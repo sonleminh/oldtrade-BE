@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
 });
 
 app.use('/api', authRouter);
-app.use('/api/danhmuc', categoryRouter);
+app.use('/api/danh-muc', categoryRouter);
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
 app.use('/api', uploadRouter);

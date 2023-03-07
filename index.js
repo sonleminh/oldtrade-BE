@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 const authRouter = require('./src/routes/auth.route');
+const categoryRouter = require('./src/routes/category.route');
 const userRouter = require('./src/routes/user.route');
 const postRouter = require('./src/routes/post.route');
 const uploadRouter = require('./src/routes/upload.route');
@@ -61,7 +62,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', ({ senderId, receiverId, text }) => {
-    const user = getUser(senderId);
+    const user = getUser(receiverId);
+    console.log(user);
     io.to(user.socketId).emit('getMessage', {
       senderId,
       text,
@@ -76,6 +78,7 @@ io.on('connection', (socket) => {
 });
 
 app.use('/api', authRouter);
+app.use('/api/danh-muc', categoryRouter);
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
 app.use('/api', uploadRouter);

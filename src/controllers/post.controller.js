@@ -1,4 +1,5 @@
 const { default: mongoose } = require('mongoose');
+const Category = require('../models/category.model');
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
 
@@ -28,7 +29,7 @@ const getByUserId = async (req, res) => {
   try {
     userPostList = await User.findById(userId).populate('postList');
     if (!userPostList) {
-      return res.status(404).json({ message: 'No blog found!' });
+      return res.status(404).json({ message: 'No post found!' });
     }
     return res.status(200).json({ post: userPostList });
   } catch (error) {
@@ -37,7 +38,7 @@ const getByUserId = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { category, title, image, price, description, userId, address } =
+  const { categoryId, title, image, price, description, userId, address } =
     req.body;
   let existingUser;
   try {
@@ -49,8 +50,16 @@ const createPost = async (req, res) => {
     return res.status(400).json({ message: 'Unable to find user by this ID' });
   }
   try {
+    existsCategory = await Category.findById(categoryId);
+  } catch (error) {
+    return console.log(error);
+  }
+  if (!existsCategory) {
+    return res.status(400).json({ message: 'Unable to find user by this ID' });
+  }
+  try {
     const newPost = new Post({
-      category,
+      category: categoryId,
       title,
       image,
       price,
@@ -63,7 +72,9 @@ const createPost = async (req, res) => {
     session.startTransaction();
     await newPost.save({});
     existingUser.postList.push(newPost);
+    existsCategory.postList.push(newPost);
     await existingUser.save({ session });
+    await existsCategory.save({ session });
     await session.commitTransaction();
 
     res.json({
@@ -109,10 +120,13 @@ const deletePost = async (req, res) => {
       return res.status(404).json({ message: 'Post does not exist' });
     }
 
-    const post = await Post.findByIdAndDelete(postId).populate('user');
-    console.log('test:', post);
+    const post = await Post.findByIdAndDelete(postId)
+      .populate('user')
+      .populate('category');
     await post.user.postList.pull(post);
+    await post.category.postList.pull(post);
     await post.user.save();
+    await post.category.save();
 
     return res.status(200).json({ message: 'Delete post successfully' });
   } catch (error) {

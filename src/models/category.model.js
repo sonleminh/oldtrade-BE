@@ -1,29 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-const userSchema = new Schema(
+const categorySchema = new Schema(
   {
     name: {
       type: String,
       require: true,
     },
-    phone: {
+    slug: {
       type: String,
       require: true,
     },
-    email: {
+    icon: {
       type: String,
-      require: true,
-    },
-    password: {
-      type: String,
-      require: true,
-    },
-    address: {
-      type: String,
-    },
-    verified: {
-      type: Boolean,
       require: true,
     },
     postList: [{ type: mongoose.Types.ObjectId, ref: 'Post', require: true }],
@@ -33,6 +21,6 @@ const userSchema = new Schema(
   }
 );
 
-const User = mongoose.model('User', userSchema);
+const Category = mongoose.model('Category', categorySchema);
 
-module.exports = User;
+module.exports = Category;

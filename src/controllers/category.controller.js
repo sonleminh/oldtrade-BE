@@ -23,9 +23,11 @@ const getPostByCategory = async (req, res) => {
   const categorySlug = req.params.id;
   let postByCategory;
   try {
-    postByCategory = await Category.findOne({ slug: categorySlug }).populate(
-      'postList'
-    );
+    postByCategory = await Category.findOne({ slug: categorySlug })
+      .sort({
+        _id: -1,
+      })
+      .populate('postList');
     if (!postByCategory) {
       return res.status(404).json({ message: 'No post found !' });
     }

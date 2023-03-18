@@ -5,7 +5,9 @@ const User = require('../models/user.model');
 
 const getAllPost = async (req, res) => {
   try {
-    const postList = await Post.find({});
+    const postList = await Post.find({}).sort({
+      _id: -1,
+    });
     res.json(postList);
   } catch (error) {
     throw new Error('Not Found List Post');

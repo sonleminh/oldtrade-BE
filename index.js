@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('cookie-session');
+const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);

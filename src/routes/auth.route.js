@@ -6,6 +6,7 @@ const {
   register,
   login,
   verifyUser,
+  changePass,
 } = require('../controllers/auth.controller');
 const User = require('../models/user.model');
 
@@ -16,5 +17,7 @@ router.post('/register', register);
 router.post('/login', login);
 
 router.put('/verify/:id', verifyUser);
+
+router.patch('/changepass/:id', changePass);
 
 module.exports = router;

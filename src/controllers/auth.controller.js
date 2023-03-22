@@ -58,8 +58,37 @@ const verifyUser = async (req, res) => {
   }
 };
 
+const changePass = async (req, res) => {
+  const userId = req.params.id;
+  const { currentPassword, newPassword } = req.body;
+  try {
+    const user = await User.findOne({
+      _id: userId,
+    });
+    const checkPassword = bcrypt.compareSync(currentPassword, user.password);
+    if (checkPassword === false) {
+      return res
+        .status(400)
+        .json({ message: 'Current password does not match' });
+    }
+    const newHashPassword = await bcrypt.hash(newPassword, 10);
+    const newUserPassword = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: { password: newHashPassword },
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      message: 'Update password successfully',
+      newUserPassword,
+    });
+  } catch (error) {}
+};
+
 module.exports = {
   register,
   login,
   verifyUser,
+  changePass,
 };
